@@ -48,7 +48,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         select(fromStore.selectUserStateUsers),
         map(users =>
           users.filter(user => {
-            return user.first_name !== "";
+            return user.first_name !== '';
           })
         )
       )

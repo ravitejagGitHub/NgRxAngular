@@ -23,7 +23,17 @@ import { reducers, appsStateKey } from './store';
     AppRoutingModule,
     ReactiveFormsModule,
     // StoreModule.forRoot({ users: UsersReducer}),
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(
+      {},
+      {
+        runtimeChecks: {
+          strictStateImmutability: true,
+          strictActionImmutability: true,
+         // strictStateSerializability: true,
+         // strictActionSerializability: true
+        }
+      }
+    ),
     StoreModule.forFeature(appsStateKey, reducers),
     EffectsModule.forRoot([UsersEffects]),
     StoreDevtoolsModule.instrument({

@@ -12,7 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment'; // Angular CLI environment
-import { reducers, appsStateKey } from './store';
+import { reducers, appsStateKey, userStateKey } from './store';
+import { UsersReducer } from './store/users';
 
 @NgModule({
   declarations: [AppComponent, UsersComponent],
@@ -22,21 +23,24 @@ import { reducers, appsStateKey } from './store';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    // StoreModule.forRoot({ users: UsersReducer}),
     StoreModule.forRoot(
-      {},
+      { },
       {
         runtimeChecks: {
           strictStateImmutability: true,
-          strictActionImmutability: true,
-         // strictStateSerializability: true,
-         // strictActionSerializability: true
+          strictActionImmutability: true
+          // strictStateSerializability: true,
+          // strictActionSerializability: true
         }
       }
     ),
     StoreModule.forFeature(appsStateKey, reducers),
+
     EffectsModule.forRoot([UsersEffects]),
+    // EffectsModule.forFeature([UsersEffects]),
+
     StoreDevtoolsModule.instrument({
+      name: 'NgRx Testing',
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production // Restrict extension to log-only mode
     })

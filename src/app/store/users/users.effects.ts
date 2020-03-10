@@ -12,21 +12,19 @@ import { UsersService } from '../../users.service';
 export class UsersEffects {
   constructor(private action$: Actions, private userService: UsersService) {}
 
-  GetUsers$: Observable<Action> = createEffect(() =>
-    this.action$.pipe(
+  GetUsers$: Observable<Action> = createEffect(() => {
+    return this.action$.pipe(
       ofType(UsersActions.BeginGetUsersAction),
       mergeMap(action =>
         this.userService.getAll().pipe(
           map((users: IUser[]) => {
             return UsersActions.SuccessGetUsersAction({ users });
           }),
-          catchError((error: Error) => {
-            return of(UsersActions.ErrorUserAction(error));
-          })
+          catchError(error => of(UsersActions.ErrorUserAction(error)))
         )
       )
-    )
-  );
+    );
+  });
 
   GetUser$: Observable<Action> = createEffect(() =>
     this.action$.pipe(

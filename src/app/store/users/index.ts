@@ -24,6 +24,6 @@ export const selectUserError =  createSelector(
 );
 export const totalUsers =  createSelector(
   selectUsers,
-  (users: IUser[]) => users.length
+  (users: IUser[]) => users?.length
 );
 

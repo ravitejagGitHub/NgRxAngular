@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subscription, Subject, pipe } from 'rxjs';
 
 import IUser from '../store/users/users.model';
 import * as UsersActions from '../store/users/users.actions';
@@ -10,11 +10,9 @@ import {
   selectSelectedUser,
   selectUserError
 } from '../store/users';
-import {
-  IAppState,
-} from './../store/index';
+import { IAppState } from './../store/index';
 import * as fromStore from './../store';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
@@ -45,8 +43,16 @@ export class UsersComponent implements OnInit, OnDestroy {
     //   }
     // );
 
-    this.users$ = this.store
-      .select(fromStore.selectUserStateUsers);
+    this.users$ = this.store.pipe(
+      pipe(
+        select(fromStore.selectUserStateUsers),
+        map(users =>
+          users.filter(user => {
+            return user.first_name !== "";
+          })
+        )
+      )
+    );
 
     this.userState$
       .pipe(select(totalUsers))

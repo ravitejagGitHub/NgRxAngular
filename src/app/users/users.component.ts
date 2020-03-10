@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.sass']
+  styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit, OnDestroy {
   User: string = '';

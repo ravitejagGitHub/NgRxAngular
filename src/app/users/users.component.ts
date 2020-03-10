@@ -6,7 +6,18 @@ import { Observable, Subscription, Subject } from 'rxjs';
 import IUser from '../store/users/users.model';
 import * as UsersActions from '../store/users/users.actions';
 import { FormGroup, FormControl } from '@angular/forms';
-import { selectUsers, totalUsers, selectSelectedUser, selectUserError } from '../store/users';
+import {
+  selectUsers,
+  totalUsers,
+  selectSelectedUser,
+  selectUserError
+} from '../store/users';
+import {
+  selectUserStateUsers,
+  IAppState,
+  userStateKey
+} from './../store/index';
+import * as fromStore from './../store';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -17,6 +28,7 @@ import { takeUntil } from 'rxjs/operators';
 export class UsersComponent implements OnInit, OnDestroy {
   User: string = '';
   users: IUser[] = [];
+  users$: Observable<IUser[]> = null;
   userState$: Observable<IUserState>;
   usersSubscription: Subscription[];
   userForm: FormGroup;
@@ -25,39 +37,41 @@ export class UsersComponent implements OnInit, OnDestroy {
   totalUsers = 0;
   private destroyed$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private store: Store<{ users: IUserState }>) {
-    this.userState$ = this.store.select('users');
+  constructor(private store: Store<IAppState>) {
+    this.userState$ = this.store.select(userStateKey);
   }
 
   ngOnInit(): void {
+    // this.userState$.pipe(select(selectUsers))
+    // .pipe(takeUntil(this.destroyed$)).subscribe(
+    //   (users: IUser[]) => {
+    //     this.users = users;
+    //   }
+    // );
 
-    this.userState$.pipe(select(selectUsers))
-    .pipe(takeUntil(this.destroyed$)).subscribe(
-      (users: IUser[]) => {
-        this.users = users;
-      }
-    );
+    this.users$ = this.store
+      .select(fromStore.selectUserStateUsers);
 
-    this.userState$.pipe(select(totalUsers))
-    .pipe(takeUntil(this.destroyed$)).subscribe(
-      (usersCount: number) => {
+    this.userState$
+      .pipe(select(totalUsers))
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((usersCount: number) => {
         this.totalUsers = usersCount;
-      }
-    );
+      });
 
-    this.userState$.pipe(select(selectSelectedUser))
-    .pipe(takeUntil(this.destroyed$)).subscribe(
-      (selectedUser: IUser) => {
+    this.userState$
+      .pipe(select(selectSelectedUser))
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((selectedUser: IUser) => {
         this.selectedUser = selectedUser;
-      }
-    );
+      });
 
-    this.userState$.pipe(select(selectUserError))
-    .pipe(takeUntil(this.destroyed$)).subscribe(
-      (error: Error) => {
+    this.userState$
+      .pipe(select(selectUserError))
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((error: Error) => {
         this.errorMsg = error?.message;
-      }
-    );
+      });
     // this.usersSubscription = this.userState$.pipe(select(selectUsers)).subscribe(
     //   (users: IUsers[]) => {
     //     this.users = users;

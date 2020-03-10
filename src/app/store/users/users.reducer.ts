@@ -1,15 +1,10 @@
 import {
   createReducer,
   on,
-  Action,
-  createSelector,
-  MemoizedSelector,
-  State
 } from '@ngrx/store';
 
 import IUserState, { initializeState } from './users.state';
 import * as UsersActions from './users.actions';
-import IUser from './users.model';
 
 export const initialState = initializeState();
 

@@ -1,21 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import IUserState from '../store/users/users.state';
 import { Observable, Subscription, Subject } from 'rxjs';
 
 import IUser from '../store/users/users.model';
 import * as UsersActions from '../store/users/users.actions';
 import { FormGroup, FormControl } from '@angular/forms';
 import {
-  selectUsers,
   totalUsers,
   selectSelectedUser,
   selectUserError
 } from '../store/users';
 import {
-  selectUserStateUsers,
   IAppState,
-  userStateKey
 } from './../store/index';
 import * as fromStore from './../store';
 import { takeUntil } from 'rxjs/operators';
@@ -29,7 +25,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   User: string = '';
   users: IUser[] = [];
   users$: Observable<IUser[]> = null;
-  userState$: Observable<IUserState>;
+  userState$: Observable<any>;
   usersSubscription: Subscription[];
   userForm: FormGroup;
   selectedUser: IUser = null;
@@ -38,7 +34,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   private destroyed$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private store: Store<IAppState>) {
-    this.userState$ = this.store.select(userStateKey);
+    this.userState$ = this.store.select<any>(fromStore.appsStateKey);
   }
 
   ngOnInit(): void {

@@ -1,0 +1,43 @@
+
+<div class="error-msg">
+  <span *ngIf="errorMsg"> {{errorMsg}}</span>
+</div>
+<div class="Container">
+    <h2>Users: {{totalUsers$| async}}</h2>
+
+       <ng-container *ngFor="let user of (users$  | async )">
+        <div class="row" (click)="getUser(user.id)">
+            <div class="col-md-2 userItem">{{ user.first_name }}</div>
+            <div class="col-md-2 userItem">{{ user.last_name }}</div>
+            <div class="col-md-2 userItem"><button (click)="deleteUser(user.id)" > Delete  </button></div>
+        </div>
+    </ng-container>
+</div>
+
+<hr />
+
+<ng-container *ngIf="selectedUser$ | async ">
+        <!-- <b>Selected User:</b> {{selectedUser$.first_name}} {{selectedUser$.last_name}}, {{selectedUser$.email}} -->
+</ng-container>
+
+<div class="container form-group" style="margin: 10px;">
+    <h3>Create New User</h3>
+    <form (ngSubmit)="createuser()" [formGroup]="userForm">
+        <div class="row">
+            <div class="form-group col-md-2">
+                <input formControlName="name" placeholder="Enter Name" class="form-control"
+                    style="min-width: 150px;" />
+            </div>
+
+            <div class="form-group col-md-2">
+                <input formControlName="job" placeholder="Enter Job" class="form-control"
+                    style="min-width: 150px;" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary" style="Width:70px;">
+                    Add
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -6,6 +6,11 @@ export const GetUserAction = createAction(
   '[User] - Get User',
   props<{ id: number }>()
 );
+
+export const GetCurrentUser = createAction(
+  '[User Entity] - Get Selected User',
+  props<{ id: number }>()
+);
 export const SuccessGetUserAction = createAction(
   '[User] - Success Get User',
   props<{ user: IUser }>()

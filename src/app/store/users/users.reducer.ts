@@ -1,9 +1,11 @@
 import {
   createReducer,
   on,
+  Action,
 } from '@ngrx/store';
 
 import IUserState, { initializeState } from './users.state';
+
 import * as UsersActions from './users.actions';
 
 export const initialState = initializeState();
@@ -51,5 +53,13 @@ export const reducer = createReducer(
     return { ...state, userError: error };
   })
 );
+
+export function userReducer(
+  state: IUserState | undefined,
+  action: Action
+) {
+  return reducer(state, action);
+}
+
 
 

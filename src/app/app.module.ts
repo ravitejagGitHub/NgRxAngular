@@ -12,11 +12,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment'; // Angular CLI environment
-import { reducers, appsStateKey, userStateKey } from './store';
+import { reducers, appsStateKey } from './store';
 import { UsersReducer } from './store/users';
+import { EntityUserComponent } from './entity-user/entity-user.component';
 
 @NgModule({
-  declarations: [AppComponent, UsersComponent],
+  declarations: [AppComponent, UsersComponent, EntityUserComponent],
   imports: [
     BrowserModule,
     FormsModule,

@@ -14,29 +14,32 @@ import { takeUntil, map } from 'rxjs/operators';
   styleUrls: ['./entity-user.component.scss']
 })
 export class EntityUserComponent implements OnInit, OnDestroy {
-
   users$: Observable<IUser[]> = null;
   appState$: Observable<IAppState>;
   userForm: FormGroup;
-  selectedUser$: Observable<IUser> = null;
+  selectedUser$: Observable<IUser>;
   errorMsg = null;
   totalUsers$: Observable<number> = null;
 
-  constructor(private store: Store<IAppState>) {
-  }
+  constructor(private store: Store<IAppState>) {}
 
   ngOnInit(): void {
-
     this.users$ = this.store.pipe(
       pipe(
         select(fromStore.selectAllUsers),
         map(users =>
-           users.filter(user => {
+          users.filter(user => {
             return user.first_name !== '';
           })
         )
       )
     );
+
+    this.store
+      .pipe(pipe(select(fromStore.selectCurrentUser)))
+      .subscribe(user => {
+        console.log(user);
+      });
 
     this.store.dispatch(UsersActions.BeginGetUsersAction());
 
@@ -62,9 +65,5 @@ export class EntityUserComponent implements OnInit, OnDestroy {
     this.store.dispatch(UsersActions.DeleteUserAction({ id }));
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 }
-
-
-

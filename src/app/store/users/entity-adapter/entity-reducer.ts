@@ -31,7 +31,7 @@ export const initialState: IEntityUserState = adapter.getInitialState({
 const userReducer = createReducer(
   initialState,
   on(UsersActions.BeginGetUsersAction, state => state),
-  on(UsersActions.GetUserAction, (state, { id }) => {
+  on(UsersActions.GetCurrentUser, (state, { id }) => {
     return {
       ...state,
       selectedUserId: id
